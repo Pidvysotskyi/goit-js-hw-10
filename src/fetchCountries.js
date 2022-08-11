@@ -1,3 +1,4 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const BASE_URL = 'https://restcountries.com/v3.1/name/';
 
 export default class ApiCountryService {
@@ -9,9 +10,18 @@ export default class ApiCountryService {
     const url = `${BASE_URL}${this.searchQuery}?fields=name,capital,population,flags,languages`;
 
     return fetch(url)
-      .then(r => r.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('error 404');
+        }
+      })
       .then(data => {
         return data;
+      })
+      .catch(() => {
+        Notify.failure('Oops, there is no country with that name');
       });
   }
   get query() {
