@@ -22,6 +22,7 @@ export default class ApiCountryService {
       })
       .catch(() => {
         Notify.failure('Oops, there is no country with that name');
+        return [];
       });
   }
   get query() {
